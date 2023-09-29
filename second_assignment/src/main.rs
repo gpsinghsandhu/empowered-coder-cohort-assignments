@@ -23,6 +23,12 @@ where
     collection.into_iter().map(|x| transform(x)).collect()
 }
 
+fn fancy_composed_function(collection: Vec<i32>) -> Vec<String> {
+    let incremented_collection = increment_by_n(collection, 7);
+    let filtered_collection = filter_by_condition(incremented_collection, |x| *x < 20);
+    transform_to_string(filtered_collection, |x| format!("{} bananas", x))
+}
+
 fn main() {
     // Example usage of data transformation functions
     let numbers = vec![1, 2, 3, 4, 5];
@@ -35,4 +41,7 @@ fn main() {
     
     let to_string = transform_to_string(numbers.clone(), |x| x.to_string());
     println!("Transformed to strings: {:?}", to_string);
+
+    let test_numbers = vec![3, 7, 12, 15, 20];
+    println!("Fancy function result: {:?}", fancy_composed_function(test_numbers));
 }
