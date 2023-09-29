@@ -31,6 +31,14 @@ impl Book {
             is_available
         }
     }
+
+    pub fn clone(&self) -> Book {
+        Book {
+            title: self.title.to_string(),
+            author: self.author.to_string(),
+            is_available: self.is_available
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -55,17 +63,17 @@ impl Library {
         self.books.push(book)
     }
 
-    fn checkout_book(& mut self, book_title: String, borrower_name: String) -> &Book {
+    fn checkout_book(&mut self, book_title: String, borrower_name: String) -> Book {
         let book = self.books.iter_mut().find(|mybook| mybook.title == book_title).expect("Book not in library, cannot checkout");
         if book.is_available == false {
             panic!("Book is already checked out");
         }
         book.is_available = false;
         self.book_borrowers.insert(book.title.to_string(), borrower_name);
-        book
+        book.clone()
     }
 
-    fn return_book(& mut self, book_title: String) {
+    fn return_book(&mut self, book_title: String) {
         let my_book = self.books.iter_mut().find(|mybook| mybook.title == book_title).expect("Book not in library, cannot return");
         if my_book.is_available {
             panic!("Book is not checked out");
@@ -115,6 +123,7 @@ fn main() {
     library.add_book(book);
     library.add_book(book2);
 
+    println!("All books: {:?}", library.get_books());
     println!("Available books: {:?}", library.get_available_books());
     println!("Checked out books: {:?}", library.get_checkedout_books());
 
@@ -125,8 +134,8 @@ fn main() {
     println!("Checked out books: {:?}", library.get_checkedout_books());
 
     println!("Borrowing book 2 *****");
-    library.checkout_book("Book2".to_string(), "Person1".to_string());
-    // println!("Borrowed Book: {:?}", borrowed_book2);
+    let b = library.checkout_book("Book2".to_string(), "Person1".to_string());
+    println!("Borrowed Book: {:?}", b);
     println!("Available books: {:?}", library.get_available_books());
     println!("Checked out books: {:?}", library.get_checkedout_books());
 
@@ -139,4 +148,6 @@ fn main() {
     library.return_book("Book1".to_string());
     println!("Available books: {:?}", library.get_available_books());
     println!("Checked out books: {:?}", library.get_checkedout_books());
+
+    println!("Borrowed Book: {:?}", b);
 }
