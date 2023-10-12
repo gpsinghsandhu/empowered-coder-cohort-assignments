@@ -6,7 +6,7 @@ use broadcast::{Broadcast, BroadcastService};
 
 fn main() {
     println!("*******Case 1: create two receivers and try sending them messages*********");
-    let (tx, mut service) = BroadcastService::<String>::create_channel();
+    let (tx, service) = BroadcastService::<String>::create_channel();
     let rx1 = service.create_receiver();
     let rx2 = service.create_receiver();
     let mut handles = vec![];
@@ -47,7 +47,7 @@ fn main() {
 
     println!("*********Case 2: reciever looses some message until reciever thread subscribes*********");
 
-    let (tx2, mut service2) = BroadcastService::<String>::create_channel();
+    let (tx2, service2) = BroadcastService::<String>::create_channel();
 
     // first sender thread
     let tx3 = tx2.clone();

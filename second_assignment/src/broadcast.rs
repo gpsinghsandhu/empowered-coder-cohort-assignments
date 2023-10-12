@@ -52,7 +52,7 @@ pub trait Broadcast<T> where T: Clone + Send + 'static {
     /// Creates a reciever to the broadcast channel. This function blocks the thread until receiver is actually
     /// subscribed to the broadcast message. Reason for this is to have clear semantics that reciever will not lose
     /// any message after this
-    fn create_receiver(&mut self) -> Receiver<T>;
+    fn create_receiver(&self) -> Receiver<T>;
 }
 
 impl <T> Broadcast<T> for BroadcastService<T>
@@ -112,7 +112,7 @@ impl <T> Broadcast<T> for BroadcastService<T>
         (broadcast_tx, service)
     }
 
-    fn create_receiver(&mut self) -> Receiver<T> {
+    fn create_receiver(&self) -> Receiver<T> {
         let (tx, rx) = channel::<T>();
         self.subscription_tx.send(tx.clone()).unwrap();
         rx
