@@ -5,7 +5,7 @@ use std::time::Duration;
 use broadcast::{Broadcast, BroadcastService};
 
 fn main() {
-    println!("Case 1: create two receivers and try sending them messages");
+    println!("*******Case 1: create two receivers and try sending them messages*********");
     let (tx, mut service) = BroadcastService::<String>::create_channel();
     let rx1 = service.create_receiver();
     let rx2 = service.create_receiver();
@@ -45,7 +45,7 @@ fn main() {
         i.join().unwrap();
     }
 
-    println!("Case 2: reciever looses some message until reciever thread subscribes (rx3)");
+    println!("*********Case 2: reciever looses some message until reciever thread subscribes*********");
 
     let (tx2, mut service2) = BroadcastService::<String>::create_channel();
 
@@ -54,7 +54,7 @@ fn main() {
     let mut sender_handle = spawn(move || {
         for i in 0..2 {
             let message = format!("message{}", i);
-            println!("Case 2 Sender 1 sending message: {}", message);
+            println!("Case 2 Sender 1 sending message: {}, should be lost", message);
             tx3.send(message).unwrap();
             sleep(Duration::from_secs(1));
         }
